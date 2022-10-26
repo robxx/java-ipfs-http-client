@@ -46,10 +46,13 @@ public class IPFS {
     public final Name name = new Name();
     public final Pubsub pubsub = new Pubsub();
 
+    
+    
     public IPFS(String host, int port) {
         this(host, port, "/api/v0/", false);
     }
 
+    
     public IPFS(String multiaddr) {
         this(new MultiAddress(multiaddr));
     }
@@ -58,6 +61,7 @@ public class IPFS {
         this(addr.getHost(), addr.getPort(), "/api/v0/", detectSSL(addr));
     }
 
+    
     public IPFS(String host, int port, String version, boolean ssl) {
         this(host, port, version, DEFAULT_CONNECT_TIMEOUT_MILLIS, DEFAULT_READ_TIMEOUT_MILLIS, ssl);
     }
@@ -85,7 +89,7 @@ public class IPFS {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
+    }    
     
     /**
      * Configure a HTTP client timeout
@@ -96,6 +100,9 @@ public class IPFS {
         return new IPFS(host, port, version, connectTimeoutMillis, readTimeoutMillis, protocol.equals("https"));
     }
 
+    
+    
+    
     public List<MerkleNode> add(NamedStreamable file) throws IOException {
         return add(file, false);
     }
@@ -131,6 +138,9 @@ public class IPFS {
                         .map(MerkleNode::fromJSON))
                 .collect(Collectors.toList());
     }
+    
+    
+    
 
     public byte[] cat(Multihash hash) throws IOException {
         return retrieve("cat?arg=" + hash);
@@ -155,17 +165,23 @@ public class IPFS {
                 .map(Cid::decode)
                 .collect(Collectors.toList());
     }
+    
+    
 
     public Map resolve(String scheme, Multihash hash, boolean recursive) throws IOException {
         return retrieveMap("resolve?arg=/" + scheme+"/"+hash +"&r="+recursive);
     }
+    
+    
 
-
+    @Deprecated
     public String dns(String domain, boolean recursive) throws IOException {
         Map res = retrieveMap("dns?arg=" + domain + "&r=" + recursive);
         return (String)res.get("Path");
     }
 
+    
+    
     public Map mount(java.io.File ipfsRoot, java.io.File ipnsRoot) throws IOException {
         if (ipfsRoot != null && !ipfsRoot.exists())
             ipfsRoot.mkdirs();

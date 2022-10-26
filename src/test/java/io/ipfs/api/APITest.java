@@ -14,6 +14,7 @@ import java.util.stream.*;
 
 import static org.junit.Assert.assertTrue;
 
+@Ignore
 public class APITest {
 
     private final IPFS ipfs = new IPFS(new MultiAddress("/ip4/127.0.0.1/tcp/5001"));
@@ -151,7 +152,7 @@ public class APITest {
             throw new IllegalStateException("Different contents!");
     }
 
-//    @Test
+    @Test
     public void largeFileTest() throws IOException {
         byte[] largerData = new byte[100*1024*1024];
         new Random(1).nextBytes(largerData);
@@ -159,7 +160,7 @@ public class APITest {
         fileTest(largeFile);
     }
 
-//    @Test
+    @Test
     public void hugeFileStreamTest() throws IOException {
         byte[] hugeData = new byte[1000*1024*1024];
         new Random(1).nextBytes(hugeData);
@@ -204,6 +205,7 @@ public class APITest {
             throw new IllegalStateException("Object shouldn't be present!");
     }
 
+   
     public void fileTest(NamedStreamable file)  throws IOException{
         MerkleNode addResult = ipfs.add(file).get(0);
         byte[] catResult = ipfs.cat(addResult.hash);
@@ -380,8 +382,8 @@ public class APITest {
         System.out.println();
     }
 
-//    @Ignore // Ignored because ipfs frequently times out internally in the publish call
-    @Test
+   @Ignore // Ignored because ipfs frequently times out internally in the publish call
+   @Test
     public void publish() throws Exception {
         // JSON document
         String json = "{\"name\":\"blogpost\",\"documents\":[]}";
@@ -402,7 +404,7 @@ public class APITest {
         Assert.assertEquals("Should be equals", resolved, "/ipfs/" + merkleNode.hash.toString());
     }
 
-    @Test
+  @Test
     public void pubsubSynchronous() {
         String topic = "topic" + System.nanoTime();
         List<Map<String, Object>> res = Collections.synchronizedList(new ArrayList<>());
@@ -423,7 +425,7 @@ public class APITest {
         Assert.assertTrue(res.size() > nMessages - 5); // pubsub is not reliable so it loses messages
     }
 
-    @Test
+  @Test
     public void pubsub() throws Exception {
         String topic = "topic" + System.nanoTime();
         Stream<Map<String, Object>> sub = ipfs.pubsub.sub(topic);
@@ -433,6 +435,7 @@ public class APITest {
         List<Map> results = sub.limit(2).collect(Collectors.toList());
         Assert.assertTrue( ! results.get(0).equals(Collections.emptyMap()));
     }
+    
 
     private static String toEscapedHex(byte[] in) throws IOException {
         StringBuilder res = new StringBuilder();
@@ -602,7 +605,7 @@ public class APITest {
     }
 
     @Test
-    @Ignore("name test may hang forever")
+//    @Ignore("name test may hang forever")
     public void nameTest() throws IOException {
         MerkleNode pointer = new MerkleNode("QmPZ9gcCEpqKTo6aq61g2nXGUhM4iCL3ewB6LDXZCtioEB");
         Map pub = ipfs.name.publish(pointer.hash);

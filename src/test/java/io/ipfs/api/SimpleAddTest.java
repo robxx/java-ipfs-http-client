@@ -22,6 +22,8 @@ import io.ipfs.multiaddr.MultiAddress;
  * ipfs --api=/ip4/127.0.0.1/tcp/5001 add -r src/test/resources/html
  *
  */
+
+@Ignore
 public class SimpleAddTest {
 
     static final Map<String, String> cids = new LinkedHashMap<>();

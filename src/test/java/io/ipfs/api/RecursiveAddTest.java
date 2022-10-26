@@ -5,9 +5,11 @@ import java.util.*;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.Ignore;
 
 import io.ipfs.multiaddr.MultiAddress;
 
+@Ignore
 public class RecursiveAddTest {
 
     private final IPFS ipfs = new IPFS(new MultiAddress("/ip4/127.0.0.1/tcp/5001"));
