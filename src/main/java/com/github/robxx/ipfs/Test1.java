@@ -1,4 +1,4 @@
-package com.github.robxx;
+package com.github.robxx.ipfs;
 
 import java.io.IOException;
 import java.util.Map;
@@ -15,9 +15,11 @@ public class Test1 {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		IPFS ipfs = new IPFS(new MultiAddress("/ip4/127.0.0.1/tcp/5001"));
+		IPFS ipfs = new IPFS(new MultiAddress("/ip4/127.0.0.1/tcp/5001")).timeout(5000);
 
-		ipfs = ipfs.timeout(5000);
+		//ipfs = ipfs.timeout(5000);
+		
+		
 
 		try {
 			Map m = ipfs.commands();
@@ -35,7 +37,7 @@ public class Test1 {
 	}
 
 	static void doCommands(JsonObject o, String c) {
-		String cmd;
+		String cmd = "";
 		JsonArray subcommand = o.getAsJsonArray("Subcommands");
 		for (int x = 0; x < subcommand.size(); x++) {
 			
@@ -47,9 +49,15 @@ public class Test1 {
 				flg += (" --" + flags.get(y).getAsJsonObject().get("Names").getAsJsonArray().get(0).getAsString());
 			}
 			
-			cmd = c + " " + subcommand.get(x).getAsJsonObject().get("Name").getAsJsonPrimitive().getAsString();
+			
+			
+			cmd = subcommand.get(x).getAsJsonObject().get("Name").getAsJsonPrimitive().getAsString();
+			
+			
+			cmd = c + " " + cmd;			
+			
 			System.out.print(cmd + flg + "\r\n");
-
+			
 			
 			doCommands(o, cmd);
 		}
